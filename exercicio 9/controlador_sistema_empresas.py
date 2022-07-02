@@ -36,7 +36,9 @@ class ControladorSistemaEmpresas():
     '''
 
     def exclui_empresa(self, empresa: Empresa):
-        ...
+        for empresas in self.__empresas:
+            if empresas==empresa:
+                self.__empresas.remove(empresa)
 
     '''
     Permite buscar uma empresa na lista de empresas pelo CNPJ
@@ -46,7 +48,11 @@ class ControladorSistemaEmpresas():
     '''
 
     def busca_empresa_pelo_cnpj(self, cnpj: int) -> Empresa:
-        ...
+        for empresa in self.__empresas:
+            if empresa.cnpj==cnpj:
+                return empresa
+
+
 
     '''
     Retorna a lista de empresas cadastradas
@@ -56,7 +62,7 @@ class ControladorSistemaEmpresas():
 
     @property
     def empresas(self) -> list:
-        ...
+        return self.__empresas
 
     '''
     Calcula o total de impostos de todas as empresas.
@@ -67,4 +73,7 @@ class ControladorSistemaEmpresas():
     '''
 
     def calcula_total_impostos(self) -> float:
-        ...
+        total=0
+        for empresa in self.__empresas:
+            total+=empresa.total_impostos()
+        return total
