@@ -1,5 +1,5 @@
 from imposto import Imposto
-
+from incidenciaImposto import IncidenciaImposto
 ...
 
 
@@ -10,9 +10,9 @@ class Empresa:
         if isinstance(nome_de_fantasia, str) and nome_de_fantasia:
             self.__nome_de_fantasia=nome_de_fantasia
         self.__impostos = []
-        self.__faturamento_servicos = 0.0
-        self.__faturamento_producao = 0.0
-        self.__faturamento_vendas = 0.0
+        self.__faturamento_servicos = None
+        self.__faturamento_producao = None
+        self.__faturamento_vendas = None
 
 
     '''
@@ -33,12 +33,7 @@ class Empresa:
     def inclui_imposto(self, imposto: Imposto):
         if isinstance(imposto, Imposto) and imposto:
             self.__impostos.append(imposto)
-            if imposto.incidencia_imposto==1:
-                self.__faturamento_producao-=imposto.aliquota
-            elif imposto.incidencia_imposto==2:
-                self.__faturamento_servicos-=imposto.aliquota
-            elif imposto.incidencia_imposto==3:
-                self.__faturamento_vendas-=imposto.aliquota
+
 
 
 
@@ -84,7 +79,20 @@ class Empresa:
     '''
 
     def total_impostos(self) -> float:
-        ...
+        total=0
+        for imposto in self.__impostos:
+            if imposto.incidencia_imposto==IncidenciaImposto.VENDAS:
+                total+=self.__faturamento_vendas*imposto.calcula_aliquota()
+            elif imposto.incidencia_imposto==IncidenciaImposto.PRODUCAO:
+                total+=self.__faturamento_producao*imposto.calcula_aliquota()
+            elif imposto.incidencia_imposto==IncidenciaImposto.SERVICOS:
+                total+=self.__faturamento_servicos*imposto.calcula_aliquota()
+            elif imposto.incidencia_imposto==IncidenciaImposto.TODOS:
+                total += self.__faturamento_vendas * imposto.calcula_aliquota()
+                total+=self.__faturamento_producao*imposto.calcula_aliquota()
+                total += self.__faturamento_servicos * imposto.calcula_aliquota()
+        return total
+
 
     @property
     def cnpj(self):
@@ -103,4 +111,9 @@ class Empresa:
                          fat_servicos: float,
                          fat_producao: float,
                          fat_vendas: float):
-        ...
+        if isinstance(fat_servicos, float) and fat_servicos:
+            self.__faturamento_servicos=fat_servicos
+        if isinstance(fat_producao, float) and fat_producao:
+            self.__faturamento_producao=fat_producao
+        if isinstance(fat_vendas, float) and fat_vendas:
+            self.__faturamento_vendas=fat_vendas
