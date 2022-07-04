@@ -13,11 +13,10 @@ e o "desconto" for 1, entao a aliquota calculada sera de 9.0
 
 class IRPJ(Imposto):
     def __init__(self, aliquota, incidencia_imposto, desconto: float):
-        super().incidencia_imposto(aliquota,incidencia_imposto)
-        if isinstance(desconto, float) and desconto:
-            self.__desconto=desconto
+        super().__init__(aliquota, incidencia_imposto)
+        self.__aliquota = aliquota
+        self.__desconto = desconto
 
     def calcula_aliquota(self) -> float:
-        return self.aliquota-self.__desconto
+        return self.__aliquota - self.__desconto
 
-    ...

@@ -1,20 +1,13 @@
 from empresa_duplicada_exception import EmpresaDuplicadaException
-
-...
 from empresa import Empresa
 
 
-
-...
-
-
-class ControladorSistemaEmpresas():
-
+class ControladorSistemaEmpresas:
     def __init__(self):
-        self.__empresas=[]
+        self.__empresas = []
 
     '''
-    Permite incluir uma empresa utilizando a EmpresaDAO. 
+    Permite incluir uma empresa utilizando a EmpresaDAO.
     Valida pelo CNPJ se a empresa ja esta cadastrada
     Utiliza a EmpresaDAO para buscar as empresas
     @param empresa objeto Empresa que sera incluido
@@ -23,12 +16,13 @@ class ControladorSistemaEmpresas():
     '''
 
     def inclui_empresa(self, empresa: Empresa):
+        sit = True
         if isinstance(empresa, Empresa) and empresa:
-            for empresas in self.__empresas:
-                if empresas.cnpj==empresa.cnpj:
+            for empresa_na_lista in self.__empresas:
+                if empresa_na_lista.cnpj == empresa.cnpj:
                     raise EmpresaDuplicadaException
-                else:
-                    self.__empresas.append(empresa)
+            if sit is True:
+                self.__empresas.append(empresa)
 
     '''
     Permite excluir uma empresa cadastrada na EmpresaDAO
@@ -36,9 +30,12 @@ class ControladorSistemaEmpresas():
     '''
 
     def exclui_empresa(self, empresa: Empresa):
-        for empresas in self.__empresas:
-            if empresas==empresa:
-                self.__empresas.remove(empresa)
+        if isinstance(empresa, Empresa) and empresa:
+            for empresas in self.__empresas:
+                if empresas.cnpj == empresa.cnpj:
+                    self.__empresas.remove(empresas)
+                else:
+                    continue
 
     '''
     Permite buscar uma empresa na lista de empresas pelo CNPJ
@@ -49,11 +46,8 @@ class ControladorSistemaEmpresas():
 
     def busca_empresa_pelo_cnpj(self, cnpj: int) -> Empresa:
         for empresa in self.__empresas:
-            if empresa.cnpj==cnpj:
+            if empresa.cnpj == cnpj:
                 return empresa
-
-
-
     '''
     Retorna a lista de empresas cadastradas
     Utiliza a EmpresaDAO para buscar as empresas
@@ -73,7 +67,9 @@ class ControladorSistemaEmpresas():
     '''
 
     def calcula_total_impostos(self) -> float:
-        total=0
+        total = 0
         for empresa in self.__empresas:
-            total+=empresa.total_impostos()
+            total += empresa.total_impostos()
         return total
+
+

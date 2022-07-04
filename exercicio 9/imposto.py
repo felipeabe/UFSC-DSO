@@ -1,21 +1,19 @@
 from abc import ABC, abstractmethod
-from incidenciaImposto import IncidenciaImposto
+from incidencia_imposto import IncidenciaImposto
 
 
 class Imposto(ABC):
 
-
-    @abstractmethod
     def __init__(self, aliquota: float, incidencia_imposto: IncidenciaImposto):
         if isinstance(aliquota, float) and aliquota:
             self.__aliquota = aliquota
-        if isinstance(incidencia_imposto, IncidenciaImposto) and incidencia_imposto:
+        if isinstance(incidencia_imposto, IncidenciaImposto) \
+                and incidencia_imposto:
             self.__incidencia_imposto = incidencia_imposto
 
     @property
     def aliquota(self):
         return self.__aliquota
-
 
     @property
     def incidencia_imposto(self):
